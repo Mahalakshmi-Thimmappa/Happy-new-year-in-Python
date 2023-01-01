@@ -1,101 +1,224 @@
-from wsgiref import simple_server
-from flask import Flask, request, render_template
-from flask import Response
-import os
-from flask_cors import CORS, cross_origin
-from prediction_Validation_Insertion import pred_validation
-from trainingModel import trainModel
-from training_Validation_Insertion import train_validation
-import flask_monitoringdashboard as dashboard
-from predictFromModel import prediction
-import json
+# Importing turtle library to draw "Happt Birthday"
+import turtle
 
-os.putenv('LANG', 'en_US.UTF-8')
-os.putenv('LC_ALL', 'en_US.UTF-8')
+# Creating our turtle cursor to draw
+my_turtle_cursor = turtle.Turtle()
 
-app = Flask(__name__)
-dashboard.bind(app)
-CORS(app)
+# Creating a separate Canvas to draw "Happy Birthday"
+my_turtle_screen = turtle.Screen()
+
+# initializing a variable for co-ordinating
+y_coordinate = -125
 
 
-@app.route("/", methods=['GET'])
-@cross_origin()
-def home():
-    return render_template('index.html')
+# Creating a function to draw a circle on top of stick
+def draw_circle_on_top_of_stick(fill_color, border_color, x, y, radius):
+    my_turtle_cursor.penup()
+    my_turtle_cursor.pensize(3)
+    # Changing color of our cursor
+    my_turtle_cursor.color(fill_color)
+    # Changing fill color of the cursor
+    my_turtle_cursor.fillcolor(border_color)
 
-@app.route("/predict", methods=['POST'])
-@cross_origin()
-def predictRouteClient():
-    try:
-        if request.json is not None:
-            path = request.json['filepath']
+    my_turtle_cursor.goto(x, y)
+    my_turtle_cursor.pendown()
+    my_turtle_cursor.begin_fill()
 
-            pred_val = pred_validation(path) #object initialization
+    my_turtle_cursor.circle(radius)
 
-            pred_val.prediction_validation() #calling the prediction_validation function
+    my_turtle_cursor.end_fill()
 
-            pred = prediction(path) #object initialization
+    my_turtle_cursor.getscreen().update()
 
-            # predicting for dataset present in database
-            path,json_predictions = pred.predictionFromModel()
-            return Response("Prediction File created at !!!"  +str(path) +'and few of the predictions are '+str(json.loads(json_predictions) ))
-        elif request.form is not None:
-            path = request.form['filepath']
+def draw_candle_for_cake(fill_color, border_color, x, y):
+    my_turtle_cursor.penup()
 
-            pred_val = pred_validation(path) #object initialization
+    # Changing color of our cursor
+    my_turtle_cursor.color(border_color)
+    # Changing fill color of the cursor
+    my_turtle_cursor.fillcolor(fill_color)
 
-            pred_val.prediction_validation() #calling the prediction_validation function
+    my_turtle_cursor.goto(x, y)
+    my_turtle_cursor.pendown()
+    my_turtle_cursor.begin_fill()
 
-            pred = prediction(path) #object initialization
+    # Drawing the first side of our Candle
+    my_turtle_cursor.forward(25)
+    my_turtle_cursor.left(90)
 
-            # predicting for dataset present in database
-            path,json_predictions = pred.predictionFromModel()
-            return Response("Prediction File created at !!!"  +str(path) +'and few of the predictions are '+str(json.loads(json_predictions) ))
-        else:
-            print('Nothing Matched')
-    except ValueError:
-        return Response("Error Occurred! %s" %ValueError)
-    except KeyError:
-        return Response("Error Occurred! %s" %KeyError)
-    except Exception as e:
-        return Response("Error Occurred! %s" %e)
+    # Drawing the second side of our Candle
+    my_turtle_cursor.forward(60)
+    my_turtle_cursor.left(90)
+
+    # Drawing the third side of our Candle
+    my_turtle_cursor.forward(25)
+    my_turtle_cursor.left(90)
+
+    # Drawing the fourth side of our Candle
+    my_turtle_cursor.forward(60)
+    my_turtle_cursor.left(90)
+
+    my_turtle_cursor.end_fill()
+
+    my_turtle_cursor.getscreen().update()
+
+# Creating a Function to draw stick on the candle
+def draw_stick_on_candle(fill_color, x, y, cursor_size):
+    my_turtle_cursor.penup()
+
+    # Changing color of our cursor
+    my_turtle_cursor.color(fill_color)
+
+    # Changing fill color of the cursor
+    my_turtle_cursor.fillcolor(fill_color)
+    my_turtle_cursor.goto(x, y)
+    my_turtle_cursor.pensize(cursor_size)
+    my_turtle_cursor.begin_fill()
+    my_turtle_cursor.pendown()
+    my_turtle_cursor.right(90)
+    my_turtle_cursor.forward(12)
+    my_turtle_cursor.end_fill()
+    my_turtle_cursor.getscreen().update()
+
+def write_happy_inside_circle(text_color, x, y):
+    my_turtle_cursor.penup()
+    # Changing color of our cursor
+    my_turtle_cursor.color(text_color)
+
+    # Changing fill color of the cursor
+    my_turtle_cursor.goto(x, y)
+    my_turtle_cursor.begin_fill()
+    my_turtle_cursor.pendown()
+
+    my_turtle_cursor.write("Happy", font=("sans-serif", 24, "bold"))
+
+    my_turtle_cursor.getscreen().update()
+
+def write_newyear_inside_circle(text_color, x, y):
+    my_turtle_cursor.penup()
+    # Changing color of our cursor
+    my_turtle_cursor.color(text_color)
+
+    # Changing fill color of the cursor
+    my_turtle_cursor.goto(x, y)
+    my_turtle_cursor.begin_fill()
+    my_turtle_cursor.pendown()
+
+    my_turtle_cursor.write("New Year", font=("sans-serif", 24, "bold"))
+
+    my_turtle_cursor.getscreen().update()
+
+def draw_stick(fill_color, border_color, x, y):
+    my_turtle_cursor.penup()
+    my_turtle_cursor.pensize(3)
+
+    # Changing color of our cursor
+    my_turtle_cursor.color(border_color)
+
+    # Changing fill color of the cursor
+    my_turtle_cursor.fillcolor(fill_color)
+    my_turtle_cursor.goto(x, y)
+    my_turtle_cursor.begin_fill()
+    my_turtle_cursor.pendown()
+    my_turtle_cursor.left(180)
+    my_turtle_cursor.forward(200)
+    my_turtle_cursor.end_fill()
+    my_turtle_cursor.getscreen().update()
+
+# Function to draw topping of our cake
+def draw_toppings_on_cake(fill_color, border_color, x, y, radius):
+    my_turtle_cursor.penup()
+
+    # Changing color of our cursor
+    my_turtle_cursor.color(border_color)
+
+    # Changing fill color of the cursor
+    my_turtle_cursor.fillcolor(fill_color)
+    my_turtle_cursor.goto(x, y)
+    my_turtle_cursor.pendown()
+    my_turtle_cursor.begin_fill()
+
+    # Drawing a circle using circle function
+    my_turtle_cursor.forward(10)
+    my_turtle_cursor.left(90)
+    my_turtle_cursor.circle(radius, extent = 180)
+    my_turtle_cursor.left(90)
+    my_turtle_cursor.forward(10)
+    my_turtle_cursor.end_fill()
+    my_turtle_cursor.getscreen().update()
+
+# Creating a Function to draw different layers of a cake
+def draw_layer_of_the_cake(fill_color, border_color, cursor_size, x, y, width, height):
+    my_turtle_cursor.hideturtle()
+    my_turtle_cursor.penup()
+
+    my_turtle_cursor.pensize(cursor_size)
+    # Changing color of our cursor
+    my_turtle_cursor.color(border_color)
+    # Changing fill color of the cursor
+    my_turtle_cursor.fillcolor(fill_color)
+    my_turtle_cursor.goto(x, y)
+    my_turtle_cursor.pendown()
+
+    # Starting the cursor to fill color
+    my_turtle_cursor.begin_fill()
+
+    for i in range(2):
+        my_turtle_cursor.forward(width)
+        my_turtle_cursor.left(90)
+        my_turtle_cursor.forward(height)
+        my_turtle_cursor.left(90)
+
+    my_turtle_cursor.end_fill()
+    my_turtle_cursor.setheading(0)
+    my_turtle_cursor.getscreen().update()
+    
+
+# Changing the background color of our canvas
+my_turtle_screen.bgcolor("pink")
+
+# # Creating an empty list of different parts of our cake
+parts_of_cake = []
+parts_of_cake.append(["#C20067", "#93c572", 3, 20])
+parts_of_cake.append(["#FFFFFF", "#93c572", 3, 10])
+parts_of_cake.append(["#BF671F", "#93c572", 3, 25])
+parts_of_cake.append(["#C20067", "#93c572", 3, 5])
+
+#addIcing(my_turtle_cursor, "#FFFFFF",y_coordinate)
+# drawing an plate for our cake using draw_layer_of_the_cake() function
+draw_layer_of_the_cake("#FFFFFF", "#000000", 3, -220, y_coordinate - 70, 400, 10)
+
+# Drawing different parts of our cake
+for parts in parts_of_cake:
+    draw_layer_of_the_cake(parts[0], parts[1], parts[2], -135, y_coordinate - 60, 240, parts[3])
+    y_coordinate += parts[3]
 
 
+# drawing top topping of our cake
+draw_toppings_on_cake("#FFFF00", "#000000", -80, y_coordinate - 60, 10)
+draw_toppings_on_cake("#0000FF", "#000000", 59, y_coordinate - 60, 10)
+draw_toppings_on_cake("#5FF5A0", "#000000", 59, y_coordinate - 60, 10)
+draw_toppings_on_cake("#C20067", "#000000", -120, y_coordinate - 60, 10)
+draw_toppings_on_cake("#FFFF00", "#000000", -80, y_coordinate - 60, 10)
+draw_toppings_on_cake("#FF0000", "#000000", 25, y_coordinate - 60, 10)
 
-@app.route("/train", methods=['POST'])
-@cross_origin()
-def trainRouteClient():
+# Drawing candle on of our cake using draw_candle_for_cake() function
+draw_candle_for_cake("#FFF44F", "#000000", -40, y_coordinate - 60)
 
-    try:
-        if request.json['folderPath'] is not None:
-            path = request.json['folderPath']
+# Drawing stick on top og uou candle
+draw_stick_on_candle("#181A18", -26, y_coordinate + 15, 7)
 
-            train_valObj = train_validation(path) #object initialization
+# Drawing a stick for writing Happy Birthday
+draw_stick("#67F55F", "#181A18", 0, y_coordinate - 60)
 
-            train_valObj.train_validation()#calling the training_validation function
+# Drawing a circle on top of stick
+draw_circle_on_top_of_stick("#181A18", "#FFFDD0", 100, y_coordinate + 235, 100)
 
+# Writing "Happy" inside of our circle
+write_happy_inside_circle("#000000", -70, y_coordinate + 240)
 
-            trainModelObj = trainModel() #object initialization
-            trainModelObj.trainingModel() #training the model for the files in the table
+# Writing "Birthday" inside of our circle
+write_newyear_inside_circle("#000000", -80, y_coordinate + 190)
 
-
-    except ValueError:
-
-        return Response("Error Occurred! %s" % ValueError)
-
-    except KeyError:
-
-        return Response("Error Occurred! %s" % KeyError)
-
-    except Exception as e:
-
-        return Response("Error Occurred! %s" % e)
-    return Response("Training successfull!!")
-
-port = int(os.getenv("PORT",5000))
-if __name__ == "__main__":
-    host = '0.0.0.0'
-    #port = 5000
-    httpd = simple_server.make_server(host, port, app)
-    # print("Serving on %s %d" % (host, port))
-    httpd.serve_forever()
+# Calling done function at the end
+turtle.done()
