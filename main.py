@@ -1,10 +1,10 @@
-# Importing turtle library to draw "Happt Birthday"
+# Importing turtle library to draw "Happt New Year"
 import turtle
 
 # Creating our turtle cursor to draw
 my_turtle_cursor = turtle.Turtle()
 
-# Creating a separate Canvas to draw "Happy Birthday"
+# Creating a separate Canvas to draw "Happy New YEar"
 my_turtle_screen = turtle.Screen()
 
 # initializing a variable for co-ordinating
